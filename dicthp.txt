@@ -1,0 +1,60 @@
+#nop dicthp.txt负责更新id hp等参数;
+#nop 按照txd的hp list项命名规则来的 20241221完成;
+
+#var dicthp[score] {
+	#line oneshot #ac {^%!s姓名：%!s%S%!s(%w)。%*$} {
+		#var {user} {
+			{name} {%1} {id} {%2}}
+	};
+	#line oneshot #ac {^%!s根骨%!s%d%!s胆识%!s%d%!s悟性%!s%d%!s膂力%!s%d%!s容貌%!s%d$} {
+		#var {hp} {$hp} {
+			{con} {%1} {cor} {%2} {int} {%3} {str} {%4} {per} {%5}}
+	};
+	#line oneshot #ac {^%!s攻击力%!s%d%!s(%!*)%!s防御力%!s%d%!s(%!*)$} {
+		#var {hp} {$hp} {
+			{att} {%1} {def} {%2}}
+	};
+	score
+}
+#var dicthp[i] {
+	#line oneshot #ac {%!{\A\s*目前你身上没有任何东西。|\A\s*你身上带著下列这些东西\(负重\s*(\d*)%\)：}} {
+		#regexp {"%1"} {""} {#var {hp[fz]} 0} {#var {hp[fz]} {%1}}
+	};
+	i
+}
+#var dicthp[hp] {
+	#line oneshot #ac {^%!s精神：%!s%d/%!s%d%!s(%!s%d\%)%!s潜力：%!s%d%!s/%!s%d%!s(\+%d)$} {
+		#var {hp} {$hp} {
+			{jingshen} {%1} {jingshenmax} {%2} {jingshenpct} {%3} {qianli} {%4} {qianlimax} {%5} {qianlifactor} {%6}}
+	};
+	#line oneshot #ac {^%!s气血：%!s%!s%d/%!s%d%!s(%!s%d\%)%!s内力：%!s%d%!s/%!s%d%!s(\+%d)$} {
+		#var {hp} {$hp} {
+			{qixue} {%1} {qixuemax} {%2} {qixuepct} {%3} {neili} {%4} {neilimax} {%5} {neilifactor} {%6}}
+	};
+	#line oneshot #ac {^%!s食物：%!s%d/%!s%d%!s潜能：%!s%d$} {
+		#var {hp} {$hp} {
+			{food} {%1} {foodmax} {%2} {pot} {%3}}
+	};
+	#line oneshot #ac {^%!s饮水：%!s%d/%!s%d%!s经验：%!s%d$} {
+		#var {hp} {$hp} {
+			{water} {%1} {watermax} {%2} {exp} {%3}};
+		#format {hp[time]} {%T};
+		#math hp[jingshenpct2] {$hp[jingshen]*100/$hp[jingshenmax]};
+		#math hp[qixuepct2] {$hp[qixue]*100/$hp[qixuemax]};
+		#math hp[foodpct2] {$hp[food]*100/$hp[foodmax]};
+		#math hp[waterpct2] {$hp[water]*100/$hp[watermax]};
+		#math hp[watern] {($hp[watermax]-$hp[water])/30+1};
+		#math hp[jingshenadd] {$hp[jingshen]-$hp[jingshenlast]};
+		#math hp[qixueadd] {$hp[qixue]-$hp[qixuelast]};
+		#math hp[expadd] {$hp[exp]-$hp[explast]};
+		#math hp[potadd] {$hp[pot]-$hp[potlast]};
+		#math hp[timeadd] {$hp[time]-$hp[timelast]};
+		#delay 0 {#echo {<069>== %t 经过%d秒,潜能+%g,经验+%g ==} {{%F %R} {$hp[time]}} {$hp[timeadd]} {$hp[potadd]} {$hp[expadd]}};
+		#var {hp} {$hp} {
+			{jingshenlast} {$hp[jingshen]} {qixuelast} {$hp[qixue]} {explast} {$hp[exp]} {potlas]} {$hp[pot]} {timelast} {$hp[time]}	};
+		#regexp {"$hp[run]"} {""} {#nop 空值则不执行} {$hp[run]}
+	};
+	hp
+}
+
+

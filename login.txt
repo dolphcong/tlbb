@@ -1,0 +1,34 @@
+#class sys.login open;
+#nop 新ID登录，记录用户名密码，连同fight参数，存入../ids/。下次可自动登录;
+#al {main.newlogin} {
+	#event {RECEIVED INPUT} {#var tmpi %%0};
+	#line oneshot #ac {^您的英文名字(新人登录请输入new)：$} {#echo {<019> %h } {为记录新ID登录参数，请按TLBB提示分别输入用户名、密码}};
+	#line oneshot #ac {^请输入密码：$} {	#var user[id] $tmpi};
+	#line oneshot #ac {{\A\s*目前权限：\(player\)|\A\s*重新连线完毕。}} {
+		#var user[passwd] $tmpi;
+		#unevent {RECEIVED INPUT};
+		#class sys.login kill;
+		hp.score;
+		#delay 1 {
+		#class sys.user write {../ids/$user[id].txt};
+		#echo {<019> %h } {已生成用户../ids/$user[id]，下次可试用tlbb $user[id]自动登录};
+		#echo {<069> 修改密码后，请自行修改../ids/$user[id]文件，也可#var user[passwd] 密码}
+		};
+	};
+}
+#al {main.autologin} {
+	#read {../ids/$sys[session].txt};
+	#line oneshot #ac {^您的英文名字(新人登录请输入new)：$} {$user[id];$user[passwd];hp.score};
+	#line oneshot #ac {{\A\s*目前权限：\(player\)|\A\s*重新连线完毕。}} {#class sys.login kill;hp.score};
+	#line oneshot #ac {^%!s您要将另一个连线中的相同人物赶出去，取而代之吗？(y/n)%!s$} {
+		#class sys.login kill;
+		#if {$sys[kick]>0} {y};
+		#else {#delay 30 n};
+	}
+}
+#class sys.login close
+
+#nop 用户个性化参数修改后，延时30秒写入文件，避免频繁写盘。
+#nop event {VARIABLE UPDATED user} {sys.w30};
+#nop event {VARIABLE UPDATED sys} {sys.w30};
+#nop event {VARIABLE UPDATED pt} {sys.w30};

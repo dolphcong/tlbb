@@ -1,0 +1,148 @@
+#nop dict定义系列变量的字典项，用于交互输入参数、查看参数项说明等
+#var {dictfight[fight1]} {
+	{1} {
+		{key} {npc} {note} {输入npc名字} {val} {guard}
+	}
+	{2} {
+		{key} {n1} {note} {输入npc开始序号} {val} {5}
+	}
+	{3} {
+		{key} {n2} {note} {输入npc结束序号} {val} {8}
+	}
+	{4} {
+		{key} {time} {note} {输入hp发出间隔时间秒，比如60} {val} {60}
+	}
+	{5} {
+		{key} {drink} {note} {输入喝水命令，比如drink tong} {val} {drink tong}
+	}
+	{6} {
+		{key} {say} {note} {修改say什么命令，默认say id npc 编号} {val} {say $user[id] $ft[npc] $ft[n1]-$ft[n2]}
+	}
+	{7} {
+		{key} {run1} {note} {修改fight时的附加命令，如fight guard 1} {val} {#nop }
+	}
+}
+#var {dictfight[fight2]} {
+	{1} {
+		{key} {gag} {note} {修改fight时gag、heng的命令} {val} {
+		#class fight.gag open;
+		#gag {但是仍然十分有活力。 )$};
+		#gag {但是仍然有条不紊。 )$};
+		#gag {看起来可能有些累了。 )$};
+		#gag {看起来状况并不太好。 )$};
+		#gag {^快刀门弟子说道：{南边|客店|有人}};
+		#ac {^%!s%!S(%*)对你哼了一声，高高地把头一抬，一付理你都“盎居”的神情。$} {
+			#nop npc名称小写%i，是否属于哼npc的一部分，比如sword属于sword man;
+			#regexp {"%1"} {"%i$ft[npc]%*"} {#2 surrender} {#show <069>不是$ft[npc]哼不予理会}
+		};
+		#class fight.gag close}
+	}
+	{2} {
+		{key} {run} {note} {修改fight时命令} {val} {
+		$ft[drink];
+		$ft[run1];
+		#loop {$ft[n1]} {$ft[n2]} {tmp.n} {fight $ft[npc] $tmp.n};
+		$ft[say]}
+	}
+	{3} {
+		{key} {start} {note} {修改fight开始命令，如set mute2} {val} {
+		set mute;
+		set mute2;
+		set no_give 1;
+		$ft[gag];}
+	}
+	{4} {
+		{key} {stop} {note} {修改fight结束命令} {val} {
+		unset no_give;
+		unset mute;
+		#class fight.gag kill}
+	}
+}
+#var {dictfight[downexp]} {
+	{1} {
+		{key} {} {note} {} {val} {}
+	}
+	{2} {
+		{key} {} {note} {} {val} {}
+	}
+	{3} {
+		{key} {} {note} {} {val} {}
+	}
+}
+#var {dictfight[fuzhong]} {
+	{1} {
+		{key} {} {note} {} {val} {}	}
+	{2} {
+		{key} {} {note} {} {val} {}	}
+	{3} {
+		{key} {} {note} {} {val} {}	}
+}
+/*
+dict.set根据变量定义进行通用修改，%1变量dict，%2目标变量名称ft。
+创建临时al %*，根据变量规则，捕获用户的输入参数。
+tmpx=当前使用rule组，i=dict-key序号，tmpy=输出生成的变量，tmpz=最终目标变量名。
+关闭repeat enter才能正确输入空值回车。
+*/
+#al {dict.set %1 to %2} {
+	#echo {<069> 用字典生成变量，<字典项> to <变量名> 例：dict.set dictfight[fight1] to ft};
+	#config {REPEAT ENTER} {off};
+	#var tmpx $%1;
+	#if {&tmpx[] < 1} {#show <019>==指定字典不存在，输入结束==;#unvar {tmpx};#return 0};
+	#var tmpz %2;
+	#var tmpy ${$tmpz};
+	#var i 1;
+	#show {<019>==$tmpx[+$i][note]==};
+	#nop 抓取输入al开始，使用“hug chsan”可结束输入，序号i<=字典项;
+	#al {%*} {
+		#switch {"%%0"} {
+			#case {""} {
+				#nop 输入空值回车，原值不变。无原值用初始值$tmpx[+$i][val];
+				#if {!&tmpy[$tmpx[+$i][key]]} {
+				#var tmpy[$tmpx[+$i][key]] {$tmpx[+$i][val]}
+				};
+			};
+			#case {"D"} {#var tmpy[$tmpx[+$i][key]] {}	};
+			#case {"R"} {#var tmpy[$tmpx[+$i][key]] {$tmpx[+$i][val]}	};
+			#case {"hug chsan"} {#var i 999};
+			#default {#var tmpy[$tmpx[+$i][key]] {%%0}	}
+		};
+		#math i {$i+1};
+		#if {$i <= &tmpx[]} {
+			#show {<019>==$tmpx[+$i][note]==<069>空回车=原值/初始值，D=删除原值，R=恢复初始值}
+		};
+		#else {
+		#show {<019>==全部输入完成==<069>可用#var $tmpz查看，用\$ft[say]等验证效果};
+		#var $tmpz ${$tmpz} $tmpy;
+		#unal {\%*};
+		#config {REPEAT ENTER} {on};
+		#unvar {tmpx} {tmpy} {tmpz} {i}
+		}
+	};
+	#nop 抓取输入al结束;
+}
+#nop dict.info待完善，做好了或许继续变量化。;
+#al {dict.info} {
+	#show {<069> 显示<字典项>说明。例：dict.info fight1。可用项*dictfight[]};
+	#if {&dictfight[%1] < 1} {#show <019>==指定字典项不存在==$dict[%1];#return 0};
+	#var tmpx $dictfight[%1];
+	#show {<069>==字典项{%1}==};
+	#foreach {$tmpx} {i} {#show {$i[key]	$i[note]}	}
+}
+#al {fight.%0} {
+	#switch {"%0"} {
+		#case {"help"} {
+			#echo {<069>%h} {[fight.功能]提示 };
+			#echo {<069> .help显示本帮助，将实现fight启停、参数设置等变量化功能};
+			#echo {<069> .set	设置基本参数，如npc名字、间隔时间等，详情#var \$ft};
+			#echo {<069> .setrun 微调运行参数，如开始fight详细命令、gag信息等};
+			#echo {<069> .start	开始fight	.stop	停止fight};
+			#echo {<069> .down	设置DownExp功能};
+			#echo {<069> .fuzhong 设置负重调节功能};
+		};
+		#case {"set"} {dict.set dictfight[fight1] to ft};
+		#case {"setrun"} {dict.set dictfight[fight2] to ft};
+		#case {"start"} {$ft[start]};
+		#case {"stop"} {$ft[stop]};
+		#default {fight.help}
+	}
+}

@@ -1,0 +1,131 @@
+#nop main.txt负责tt参数全局设置、连线MUD。;
+/*
+charset默认使用 GBK 编码。
+packet patch网络延迟较大的时候，设置较大的包延迟选项可以尽量避免命令输出接受不完整。
+color patch颜色代码的影响不会持续到下一行，防止未闭合的文字特效污染后续文本。
+repeat enter按回车键重复输入之前的命令。
+cmd color 修改用户命令的颜色，33m为黄色，37为白色。
+wordwrap常常导致折行的文本显示为乱码，因此要关掉。
+*/
+#config {charset} {GBK1TOUTF8}
+#config {packet patch} {0.80}
+#config {color patch} {on}
+#config {repeat enter} {on}
+#config {command echo} {on}
+#config {command color} {\e[0;33m}
+#config {wordwrap} {off}
+#config {connect retry} {6.0}
+
+#nop pathdir 为tlbb增加8个斜线方向，方便map使用。自定义方向范围 1-63，来自zixijian的tt中文手册;
+#PATHDIR {nu} {sd} {17}
+#PATHDIR {su} {nd} {20}
+#PATHDIR {eu} {wd} {18}
+#PATHDIR {wu} {ed} {24}
+#PATHDIR {nd} {su} {33}
+#PATHDIR {sd} {nu} {36}
+#PATHDIR {ed} {wu} {34}
+#PATHDIR {wd} {eu} {40}
+#PATHDIR {out} {enter} {61}
+#PATHDIR {enter} {out} {62}
+
+#nop 预定义系统sys、用户user、fight等用户个性化参数，方便写入用户参数.\ids
+#class sys.user open;
+#var {sys} {
+	{note} {自动登录login,重连retry,踢掉在线kick}
+	{retry} {0} {login} {1} {kick} {0} {host} {tl.maoyu.com 8888}
+	{gag} {
+		#gag {^天龙八部新地址};
+		#gag {^您的密码太简单};
+		#nop gag {^>$};
+	}
+}
+#var {user} {
+	{id} {} {name} {} {passwd} {} {epoch} {} {note} {}
+}
+#var {ft} {
+	{note} {用户fight参数，用时设定}
+}
+#class sys.user close;
+
+#nop 启动后提示内容，自动重连事件;
+#event {PROGRAM START} {#echo {<069>%h} {帮助命令[help.]，新id登录命令[tlbb]，自动登陆[tlbb id名]}};
+#event {SESSION DISCONNECTED} {#if {$sys[retry]>0} {#gts {#session %0 %1 %3}}	}
+
+#al {tlbb} {
+	#if {"%1"==""} {
+		#format user[epoch] %T;
+		#session $user[epoch] $sys[host]
+	};
+	#else {#session %1 $sys[host]}
+}
+#split
+
+#nop 连接后载入字典库;
+#event {SESSION CONNECTED} {
+	#read ./tl/login.txt;
+	#read ./tl/dicthp.txt;
+	#read ./tl/dictfight.txt;
+	#var sys[session] %0;
+	#var sys[hostip] %2;
+	#tick {idle} {#send} {1200};
+	$sys[gag];
+	gb;
+	#regexp {"$sys[session]"} {"%d"} {main.newlogin} {main.autologin};
+};
+
+#al {help.%0} {
+	#switch {"%0"} {
+		#case {"help"} {
+			#echo {<069>%h} {[help.功能]提示 };
+			#echo {<069> help将显示本帮助};
+			#echo {<069> sys.x fight.x hp.x p.x 各自显示具体用法};
+			#echo {<069> .about显示开发信息};
+		};
+		#case {"about"} {
+			#echo {<069> 2024年12月，chengsan学习Tintin++习作，持续做到2025年x月才有点可用的样子。};
+			#echo {<069> 期间研读zixijian在GitHub发布的dzp批注tt中文手册，学习dzp的paotin++代码，鸣谢！};
+			#echo {<069> 制作期间，感谢txd、子期、的交流指导。};
+			#echo {<069> 20241220完成字典库及统一变量化命令的框架，变量化是主要思路。};
+			#echo {<069>  变量化只占内存，系统负担小，方便用户修改。ac要比对显示，al要比对输入。};
+
+		};
+		#default {help.help}
+	}
+}
+#al {sys.%0} {
+	#switch {"%0"} {
+		#case {"help"} {
+			#echo {<069>%h} {[sys.功能]提示};
+			#echo {<069> help将显示本帮助};
+			#echo {<069> .login0 关闭自动登录ID};
+			#echo {<069> .login1 设置自动登录ID（默认）};
+			#echo {<069> .retry0 关闭自动创新连线};
+			#echo {<069> .retry1 设置自动创新连线（默认）};
+			#echo {<069> .write 立即将用户个性化参数写入文件，无论是否自动保存};
+			#echo {<069> .w30 自动延时30秒将用户个性化参数写入文件};
+		};
+		#case {"login0"} {#var sys[login] 0};
+		#case {"login1"} {#var sys[login] 1};
+		#case {"retry0"} {#var sys[retry] 0};
+		#case {"retry1"} {#var sys[retry] 1};
+		#case {"write"} {#class sys.user write {../ids/$user[id].txt};#echo {<019> %h } {用户参数已更新到文件../ids/$user[id].txt};};
+		#case {"w30"} {#delay {tmpwrite} {sys.write} {30}};
+		#default {sys.help}
+	}
+}
+#al {hp.%0} {
+	#local x %0;
+	#if {"$x" == ""} {#var x help};
+	#if {&dicthp[$x] < 1} {
+		#echo {<069>%h} {功能提示 };
+		#echo {<069> 语法：hp.功能。用于捕获hp id等数据。\n dicthp字典功能 .*dicthp[]。};
+	} {$dicthp[$x]};
+}
+#al {p.%0} {
+	#local x %0;
+	#if {"$x" == ""} {#var x help};
+	#if {&dictpath[$x] < 1} {
+		#echo {<069>%h} {功能提示 };
+		#echo {<069> 语法：p.路径名。路径保存在dickpath，方便增减定制。\n key=路径名。查看全部#var dictpath查看路径名#show \*dictpath[%*]。};
+	} {$dictpath[$x]};
+}

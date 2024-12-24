@@ -1,0 +1,204 @@
+#var {dictpath[speed1]} {
+	#show SPEED开启;
+	#al {.%0} {
+		#local cnt {};
+		#local char {};
+		#parse {%0} {char} {
+			#if {"$char" >= "0" && "$char" <= "9"} {#var cnt $cnt$char};
+			#elseif {"$cnt" == ""} {$char};
+			#else {#loop $cnt 1 cnt {$char};#var cnt {}}
+		}
+	}
+};
+#var {dictpath[speed0]} {#unal {\.%0};#show SPEED关闭};
+#var {dictpath[lyj]} {#13 e;#3 n;e;#4 n;climb down};
+#var {dictpath[cxyb]} {#echo <129>逍遥子到山脚;e;e;e;n;w;se;ne;se;ne;#3 e};
+#var {dictpath[dfj]} {#3 n;#6 e;#3 n;e;#4 n;climb down};
+#var {dictpath[tsxd]} {wu;wd;#3 w;#2 s;se;e;se;e;s};
+#var {dictpath[dali]} {#echo <129>开封+到大理;#9 s;sw;#9 s};
+#var {dictpath[qin]} {#echo <129>天水到秦家寨;n;w;wu;nw;pushaside bush;n;n;e;n;e;e;n;e;#5 n;u};
+#var {dictpath[kf]} {#echo <129>大理+到开封;#9 n;ne;#9 n};
+#var {dictpath[yipin]} {#echo <129>天水西到一品堂;wu;sd;#3 s};
+#var {dictpath[yipinb]} {#echo <129>一品堂到天水西;#3 n;nu;ed;#2 e};
+#var {dictpath[qinb]} {#echo <129>秦家寨到天水;d;#5 s;#3 w;e;s;se;ed;e;s};
+#var {dictpath[yunb]} {#echo <129>云州城到天水;#5 w;se;se;s;s;sw;ed;e;s};
+#var {dictpath[dayi]} {#echo <129>洛阳+到大义分舵;n;n;n;n;n;n;nw;n;nw;ne;nw;ne;s};
+#var {dictpath[yun]} {#echo <129>天水到云州城;n;w;wu;ne;n;n;nw;nw;#5 e};
+#var {dictpath[cun]} {#echo <129>天水西到山脚小村;wu;wd;w;w;nw;ne;nu;nd;nd;nd;nd;nd;n;n};
+#var {dictpath[duan]} {
+#echo <129>大理+到段誉大岩石;
+#5 w;nw;nu;nd;nw;wu;#2 n;nu;#2 w;nw;nu;nd;nw;wu;n;n;nu;wu;climb mountain;
+	#delay {5};{nu;climb mountain;
+		#delay {5} {n;e;n;n;w;w;jump down;
+			#delay{10} {down;climb down;
+				#delay{5} {climb down;
+					#delay{5} {climb down;
+						#delay{5} {climb down;
+							#delay{6} {s;#3 ne;n;e;n;pull 青藤;
+								#delay{2} {l 玉壁;ne;pull 青藤;#echo <129><129>push rock-duanyu2}}}}}}}}};
+#var {dictpath[longtan]} {#echo <129>大理+890到龙潭,不能返回，只能quit;#5 w;nw;nu;nd;nw;wu;sw;sw;s;wu;n;ne;nd;nu;nw;wu;nu;wu;climb mountain;#delay {3};nu;ne;enter 洞穴};
+#var {dictpath[wuliang]} {#echo <129>大理+到无量山;#5 w;nw;nu;nd;nw;wu;n;n;nu;nu;#3 n;w;#2 n;w;s};
+#var {dictpath[dao]} {#echo <129>大理+到刀白凤;#6 n;#2 e;eu;ne;n;nw;#2 w;n};
+#var {dictpath[df]} {#echo <129>大理+到登封;#9 n;ne;#6 w};
+#var {dictpath[duan2]} {#echo <129>大岩石到段誉;n;nd;nd;wd;nd;ed;nd;nd;open door;n;ne;open door;w;wd;wd;open door;w;s;w};
+#var {dictpath[diaob]} {#echo <129>闪电貂到大理;sw;#2 w;nu;nw;wu;#2 w;#3 n;#2 ne;ed;se;su;sd;se;#5 e};
+#var {dictpath[duanjian]} {#echo <129>大理+拿段家剑法;#5 w;nw;nu;nd;nw;wu;#2 sw;s;se;s;e;e;ed;se;sd;e;e;ne;sw;se;ne;e;se;e;s;se;sw;ne;sw;s;sw;su;eu;su;eu;e;e;climb down;#echo <129>到了，还要jiali 100,push rock吧 duan-sword就在岩石底下};
+#var {dictpath[juhua]} {#echo <129>大理+拿菊花;n;#3 w;#5 n;#3 nu;#3 nd;#2 nu;nd;#4 n;w;knock 东篱;enter;get juhua from shelter;get juhua from pingtai;get juhua from fence;get juhua from basin;get juhua from stone};
+#var {dictpath[dfb]} {#echo <129>登封+到大理;#6 e;sw;#9 s};
+#var {dictpath[duan3]} {#echo <129>在段誉处拿书;e;n;open door;e;eu;eu;eu;open door;e;touch mirror;e;get all from table;e;w};
+#var {dictpath[qin1]} {#echo <129>秦家寨拿令牌;#3 w;n;w;ask cooker about 送饭;
+#delay{1} {e;#2 n;#2 e;open door;#2 e;find 小筐;pull 四郎报喜;
+	#delay {5} {#2 w;open door;#2 w;open door;#2 s;u;#3 e;open door;e;enter;#2 ne;enter door;find 草床;dip 破茶杯;
+		#delay{5} {out;#2 sw;out;#4 w;open door;w;give black needle to servant;#4 e}}}};
+#var {dictpath[qin2]} {#echo <129>去秦岳山的地方;#3 w;#2 n;#2 e;#5 n;#2 ed;nd;#2 n;w;n;e;n;wu;climb};
+#var {dictpath[duanb]} {#echo <129>段誉到大理;e;n;nu;nu;wu;nu;eu;e;out;climb up;#delay{3} {climb up;#delay {5} {climb up;delay {3};nu;e;#8 s}}};
+#var {dictpath[qin3]} {#echo <129>qjz聚议厅到后山茅草丛;#3 w;n;n;e;e;#5 n;ed;ed;nd;n;e;n;w;w;pushaside 茅草丛;sw};
+#var {dictpath[qin3b]} {#echo <129>qjz后山茅草丛到聚议厅;ne;e;s;s;su;wu;wu;s;s;s;s;s;w;w;s;u;e;e;e};
+#var {dictpath[wuliangb]} {#echo <129>无量山到大理;n;e;s;su;e;#4 s;sd;#2 s;ed;se;su;sd;se;#5 e};
+#var {dictpath[wuxi]} {#echo <129>洛阳到无锡;#7 s;e;s;#4 w;#4 n;#delay{3} {nw;nu;wd;ne;n;ne;n;w;#3 n}};
+#var {dictpath[wuxib]} {#echo <129>无锡到洛阳;#3 s;e;s;sw;s;sw;se;sd;se;#4 s;#delay {2} {#4 e;n;w;#7 n}};
+#var {dictpath[yunhub]} {#echo <129>饿虎岗到云州;jump 小溪;pushaside bush;sd;se;sw;s;e;se;wd;se;s;s;s;s;s;s;w};
+#var {dictpath[yunhu]} {#echo <129>云州到饿虎岗;e;n;n;n;n;n;n;nw;eu;nw;w;n;ne;nw;pushaside bush;nu;jump 小溪};
+#var {dictpath[diao]} {#echo <129>大理+到闪电貂-小心;#5 w;nw;nu;nd;nw;wu;#2 sw;s;se;s;e;e;ed;se;sd;e;e;ne;#echo <129>get diao};
+#var {dictpath[duanbook]} {#echo <129>大理拿duan-steps;e;e;e;e;e;e;e;e;e;w;n;ne;e;se;ne;e;ne;se;e;n;ne};
+#var {dictpath[duanbookb]} {#echo <129>大理拿duan-steps返回;sw;s;w;nw;sw;w;sw;nw;w;nw;s;e;#9 w};
+#var {dictpath[daob]} {#echo <129>刀白凤-大理;s;e;e;se;s;se;wd;w;w;s;s;s;s;s;s};
+#var {dictpath[yjj]} {n;n;e;n;n;e;n;n;push 一;push 梦;push 如;push 是;l hole;search hole;l tongjing;get bag from tongjing};
+#var {dictpath[tsxdb]} {n;w;nw;w;nw;n;n;n;e;e;eu;ed};
+#var {dictpath[cunb]} {#echo <129>山脚小村到开封+;e;e;eu;#4 n;#9 w};
+#var {dictpath[qin5]} {#echo <129>秦家寨拿五虎令牌;w;w;w;n;w;ask cooker about 送饭;e;n;open door;n;e;e;e;u;open door;n;ask qinbingqing about 解药;give qinbingqing snakecloth;s;d;w;w;w;s;s;u;e;e;e};
+#var {dictpath[ezub]} {#echo <129>少林寺山门到二祖庵返回;e;nd;ne;nd;ed;ne;nu;nu};
+#var {dictpath[ezu]} {#echo <129>少林寺山门到二祖庵;sd;sd;sw;wu;su;sw;su;w};
+#var {dictpath[xuelian]} {#echo <129>天山雪莲，很浪费啊;s;s;give owl jaw;su;listen 私语;l 布袋;take 小女孩 out 布袋;e;#2 nu;u;#2 e;l 足迹;climb 大树};
+#var {dictpath[qin0]} {#echo <129>秦家寨拿令牌;#3 w;n;w;ask cooker about 送饭;e;#2 n;#2 e;open door;#2 e;
+#delay {6} {find 小筐;pull 四郎报喜;#2 w;open door;#2 w;open door;#2 s;u;#3 e;
+	#delay {6} {open door;e;enter;ne;ne;enter door;find 草床;dip 破茶杯;out;sw;sw;out;open door;#4 w;open door;w;give black needle to servant;open door;e;n;n;e;e;
+		#delay {6} {n;n;n;n;n;ed;ed;nd;n;n;w;w;pushaside 茅草丛;sw;pushaside 茅草丛;nw;pushaside 茅草丛;w;nw;
+			#delay {6} {give qinweihu lingpai1;se;e;se;ne;e;s;s;su;wu;wu;s;s;s;s;s;w;w;w;w;w;w;
+				#delay {6} {open door;d;d;d;open door;n;give wulingxiong lingpai2;s;u;u;u;e;e;e;e;s;u;e;e;e;
+					#delay {6} {d;s;s;s;s;s;w;w;w;e;s;se;n;give ludahai lingpai3;
+						#delay {8} {s;nw;pushaside bush;n;n;e;n;e;e;n;e;#5 n;u}}}}}}}};
+#var {dictpath[qin00]} {get all from corpse;open door;w;w;w;w;n;n;n;e;e;e;u;open door;n;ask qinbingqing about 解药;i;give qinbingqing snakecloth;open door;s;d;w;w;w;s;e;e;e;u;n;get all from 小柜子;
+	#delay{5} {s;d;w;w;w;n;e;e;e;u;open door;n;give qinbingqing jieyao;give xiaoyun lingpai4;u;s;s;u;e;pushaside 竹林;n;give tianchi lingpai5;out;e;e}};
+#var {dictpath[ldf]} {#echo <129>洛阳到登封;#6 s;se;#3 e};
+#var {dictpath[ldfb]} {#echo <129>洛阳到登封b;#3 w;nw;#6 n};
+#var {dictpath[jxz]} {#echo <129>登封到聚贤庄;e;e;ne;n;ne;se;#4 s;w;s;s;e;s};
+#var {dictpath[jxzb]} {#echo <129>登封到聚贤庄b;n;w;n;n;e;#4 n;nw;sw;s;sw;w;w};
+#var {dictpath[frogget]} {se;nw;ne;sw;se;sw;ne;nw};
+#var {dictpath[frogto]} {#echo <129>大理+到芦苇丛;#5 w;nw;nu;nd;nw;wu;#2 sw;s;se;s;e;e;ed;se;sd;e;e};
+#var {dictpath[duanjianb]} {#echo <129>叶二娘-大理;w;w;wd;nd;wd;nd;ne;n;ne;nw;n;w;w;w;sw;w;nu;nw;wu;w;w;n;n;n;ne;ed;se;su;sd;se;e;e;e;e;e};
+#var {dictpath[tbook]} {#echo <129>天山拿书;get all from book_shelf;put forcebook in bag 1;put unarmedbook in bag 2;put parrybook in bag 3;put dodgebook in bag 4};
+#var {dictpath[xingxiu]} {
+#echo <129>天水西到星宿海;wu;wd;w;w;w;s;s;wu;ne;nw;wu;
+#delay {3} {nu;wd;sd;nd;wd;nd;ne;w;w;pushaside 茅草;w;
+	#delay {3} {#8 admire zhaixing;nw;n};
+	};
+};
+#var {dictpath[xingxiub]} {#echo <129>天水西到星宿海b;s;se;e;s;e;s;sw;su;eu;nu;eu;#delay {3} {sd;ed;se;ed;n;n;n;e;e;eu;ed}};
+#var {dictpath[xuebook]} {
+#echo <129>天水西拿雪山书;
+wu;wd;w;w;w;s;s;s;se;e;se;e;n;buy xiang from seller;
+#delay {4} {s;s;buy wineskin from waiter;
+	#delay {4} {n;w;nw;w;w;w;w;n;kneel 转轮王;s;w;n;nw;nw;w;w;shout;wu;nu;nu;give wineskin to sangjie;sd;sd;ed;se;s;s;s;give letter to duolong;su;nu;get all from 书架;
+		#delay{4} {sd;nd;n;e;e;e;e;nw;
+			#delay {2} {n;n;n;e;e;e;e;eu;ed}}}}};
+#var {dictpath[zhong]} {#echo <129>大理+找钟灵;#8 n;w;nd;#3 w;wu;su;wu;wd;nd;w;pushaside 草丛;enter;pull 大铁环;enter;n;out;knock 段;n;n;w;n;#echo <129>钟灵抓到闪电貂的前一步};
+#var {dictpath[zhongb]} {#echo <129>钟灵-大理;s;e;s;s;s;enter;s;out;out;e;su;eu;ed;nd;ed;e;e;e;su;e;s;#cr;s;s;s;s;s;s;s;};
+#var {dictpath[zhuha]} {#echo <129>大理+找朱蛤;#5 w;nw;nu;nd;nw;wu;sw;sw;s;se;s;e;e;ed;se;sd;e;e;#delay {1} {echo get frog from 芦苇丛}};
+#var {dictpath[mu2]} {#echo <129>慕容进去;n;n;w;w;w;n;knock door;#delay {3} {enter;n;n;n;e;e;n}};
+#var {dictpath[bo]} {#echo <129>凉亭到慕容博;turn 石桌;#delay {2} {d;nd;n;eu}};
+#var {dictpath[bob]} {#echo <129>慕容博到凉亭;s;sd;wd;s;su;u;nu};
+#var {dictpath[dong1]} {#echo <129>大理＋到仙人洞1;#4 s;#7 w;n};
+#var {dictpath[dong2]} {#echo <129>大理＋到仙人洞2;#4 s;w;w;s;#5 w;n};
+#var {dictpath[dong3]} {#echo <129>大理＋到仙人洞3;#4 s;#2 w;.2s;#5 w;n};
+#var {dictpath[dong4]} {#echo <129>大理＋到仙人洞4;#4 s;#2 w;#3 s;#6 w;n};
+#var {dictpath[tiaoya]} {#echo <129>从大理中心开始;#5 w;nw;nu;nd;nw;wu;sw;sw;s;se;s;e;e;ed;se;sd;e};
+#var {dictpath[luanshi]} {#echo <129>登封到李天杀;e;e;ne;n;ne;se;w;w;w;w;wu;n;n;n;e;w;s};
+#var {dictpath[luanshib]} {#echo <129>登封到李天杀b;s;ed;e;e;e;e;nw;sw;s;sw;w;w};
+#var {dictpath[nitan]} {#echo <129>大理到泥潭;#5 w;nw;nu;nd;nw;wu;#2 sw;s;se;s;e;e;ed;se;sd;e};
+#var {dictpath[nitanb]} {#echo <129>大理到泥潭b;w;nu;nw;wu;w;w;n;n;n;ne;ne;ed;se;su;sd;se;e;e;e;e;e};
+#var {dictpath[xx2]} {#echo <129>丁春秋到后山;n;ne;n;n;n;e};
+#var {dictpath[xx2b]} {#echo <129>丁春秋到后山b;w;s;s;s;sw;s};
+#var {dictpath[dlking]} {#echo <129>大理到段正明;n;w;w;w;n;n;n;n;n;nu;nd;nd;nu;nu};
+#var {dictpath[dlkingb]} {#echo <129>大理到段正明b;sd;sd;su;su;sd;s;s;s;s;s;e;e;e;s};
+#var {dictpath[xn]} {#echo <129>登封到玄难;e;e;ne;n;ne;se;#4 s;w;s;w};
+#var {dictpath[xnb]} {#echo <129>登封到玄难b;e;n;e;n;n;n;n;nw;sw;s;sw;w;w};
+#var {dictpath[dljump]} {#5 w;nw;nu;nd;nw;wu;#2 n;nu;#2 w;nw;nu;nd;nw;wu;n;n;nu;wu;climb mountain;#delay {5} {nu;climb mountain;#delay {5} {n;e;n;n;e;e;s;s;jump down}}};
+#var {dictpath[ldong]} {n;n;w;w;w;s;w;w;sw};
+#var {dictpath[kfts]} {#echo <129>开封到天水;#24 w};
+#var {dictpath[kfly]} {#echo <129>开封到洛阳;#16 w};
+#var {dictpath[lykf]} {#echo <129>洛阳到开封;#16 e};
+#var {dictpath[tskf]} {#24 e};
+#var {dictpath[dlkf]} {#echo <129>大理+到开封;#9 n;ne;#9 n};
+#var {dictpath[kfdl]} {#echo <129>开封到大理;#9 s;sw;#9 s};
+#var {dictpath[cxy]} {#echo <129>山脚谷村到逍遥子;s;s;w;w;w;sw;nw;sw;nw;e;e;s;w;w};
+#var {dictpath[xysu]} {#echo <129>逍遥子到苏星河;e;e;e;n;w;ne;se;};
+#var {dictpath[suly]} {#echo <129>苏星河到洛阳;ne;se;#7 e;eu;#4 n;#9 w};
+#var {dictpath[shanjiao]} {#echo <129>天水西到山脚小;wu;wd;w;w;nw;ne;nu;nd;nd;nd;nd;nd};
+#var {dictpath[kfdf]} {#echo <129>开封中心到登封赵;.9s;.4w};
+#var {dictpath[dfkf]} {#echo <129>登封zhao到开封中心;#4 e;#9 n};
+#var {dictpath[penglaibook]} {se;e;ne;ne;e;#8 n;w;n;e;e;get all from cabinet;w;w;s;e;#8 s;w;sw;sw;w;nw};
+#var {dictpath[qint]} {#3 w;#2 n;#2 e;#2 n;w};
+#var {dictpath[qintb]} {e;#2 s;#2 w;#2 s;e;u;#3 e};
+#var {dictpath[shanlu]} {#echo <129>大理到山路;#5 w;nw;nu;nd;nw;wu;#2 n;nu;#2 w;nw;nu;nw;wu;nu;wu;};
+#var {dictpath[shanlub]} {#echo <129>山路回大理+;.;sd;sd;ed;se;sd;se;2e;sd;2s;ed;se;su;sd;se;5e};
+#var {dictpath[ddhm]} {#echo <129>少林大殿到后寺门;n;n;e;n;n;n;n;w;n;n;n};
+#var {dictpath[hmmonk]} {#echo <129>后寺门到老和尚;n;nw;nu;wd;wu;nu;nu};
+#var {dictpath[hmmonkb]} {#echo <129>后寺门到老和尚返回;sd;sd;ed;eu;sd;se;s};
+#var {dictpath[hmsf]} {n;nw;nu;wd;wu;nw;nu;nw;nu;nu;e};
+#var {dictpath[ddhmb]} {#echo <129>少林大殿到后寺门返回;s;s;s;e;s;s;s;s;w;s;s};
+#var {dictpath[tsfb]} {#echo <129>天水关到副本杀金入口;n;w;wu;nw;pushaside bush;n;e};
+#var {dictpath[tsfbb]} {#echo <129>天水到副本b;.wesl;ed;es};
+#var {dictpath[wushi]} {e;e;ne;ne;ne;n;ne;nw;drink tong;nd};
+#var {dictpath[wushib]} {su;se;sw;s;sw;sw;sw;w;w};
+#var {dictpath[puti]} {#echo <129>大殿到菩提院;n;n;e;n;n;e;n};
+#var {dictpath[putib]} {#echo <129>菩提到大殿;s;w;s;s;w;s;s};
+#var {dictpath[ddsm]} {#echo <129>少林大殿到山门;sd;sd;s;s;sd;sd;s;s;s};
+#var {dictpath[lyjb]} {#13 e;#3 n;e;#4 n};
+#var {dictpath[dfxiaodian]} {#3 n;#17 w;wu;wd;#3 w;#2 s;se;e;se;es;open door;s};
+#var {dictpath[tsxiaodian]} {wu;wd;#3 w;#2 s;se;e;se;e;s;open door;s};
+#var {dictpath[tsxiaodianb]} {open door;n;n;w;nw;w;nw;n;n;n;e;e;eu;ed};
+#var {dictpath[lyxiaodian]} {#10 w;wu;wd;3w2s;se;e;se;es;open door;s};
+#var {dictpath[hmdamo]} {#echo <129>后寺门-达摩洞;.n;nw;nu;wd;wu;nw;nu;nw;nu;nu;e};
+#var {dictpath[hmdamob]} {#echo <129>后寺门-达摩洞b;.w;sd;sd;se;sd;se;ed;eu;sd;se;s};
+#var {dictpath[xixiayeb]} {out;sw;s;sw;sw;sw;w;w};
+#var {dictpath[xixiaye]} {e;e;ne;ne;ne;n;ne;enter};
+#var {dictpath[quanwu]} {#echo <129>清泉到wu;sw;sw;s;sw;w;w;w;w;w;w;nw;nu;nu;enter;use fire;zuan;jump valley;w};
+#var {dictpath[quanwub]} {#echo <129>wu到清泉;e;jump valley;ed;sd;sd;se;e;e;e;e;e;e;ne;n;ne;ne};
+#var {dictpath[qin2b]} {#echo <129>秦岳山返回;enter;push 大石头;ed;s;e;s;s;su;wu;wu;s;s;s;s;s;w;w;s;u;e;e;e};
+#var {dictpath[ldong2]} {n;n;e;e;e;n;n;ne};
+#var {dictpath[xxxiaodianb]} {n;n;w;nw;w;nw;n;n;w;#5 n;w;s;w;s;w;s;w;s;w;s;#4 n};
+#var {dictpath[xxxiaodian]} {#echo <129>xixia-xiaodian;#4 s;e;e;s;;e;s;e;s;e;s;sw;#2 s;se;e;se;e;s;open door;s};
+#var {dictpath[tlm2]} {su;s;s};
+#var {dictpath[tlm2b]} {n;n;nd};
+#var {dictpath[tlm3]} {su;s;s;w;w;su;su};
+#var {dictpath[tlm3b]} {nd;nd;e;e;n;n;nd};
+#var {dictpath[tlm4]} {su;s;s;w;w;su;su;e;e;e;e;e;e};
+#var {dictpath[tlm4b]} {w;w;w;w;w;w;nd;nd;n;s;e;e;n;n;nd};
+#var {dictpath[tlm5]} {su;s;s;w;w;su;w;w;su;su;e};
+#var {dictpath[tlm5b]} {w;nd;nd;e;e;nd;e;e;n;n;nd};
+#var {dictpath[tlm6]} {su;s;s;w;w;su;w;w;su;su;e;e;e;su;e;e;e};
+#var {dictpath[tlm6b]} {w;w;w;nd;w;w;w;nd;nd;e;e;nd;e;e;n;n;nd};
+#var {dictpath[tlsmaster]} {
+#echo <129>1 本参shaoze --天王殿\n
+2本因shanyang --天龙殿\n
+1到2 tlm2,返回tlm2b\n
+3本相shaochong --弥勒殿 1到3 tlm3,返回tlm3b\n
+4;本观zhongchong --圆通殿 1到4 tlm4,返回tlm4b\n
+5本尘guanchong --佛光殿 1到5 tlm5,返回tlm5b\n
+6枯荣shaoshang --牟尼殿 1到6 tlm6,返回tlm6b;
+};
+#var {dictpath[xueshanxd]} {#echo <129>xueshan-xd;ed;ed;ed;se;s5e;se;es;open door;s};
+#var {dictpath[yipinxd]} {#echo <129>yipin-xd;#3 n;nu;wd;#3 w;#2 s;se;e;se;e;s;open door;s};
+#var {dictpath[mu]} {
+#echo <129>洛阳+到慕容;
+#action {^你在湖上航行了半天，终于到了湖的另一边。} {#5 e;eu;ed;n;n;e;w;s;#delay {3} {n;e;ne;e;e;#echo 要 swear 效忠江南慕容;#unac {^你在湖上航行了半天，终于到了湖的另一边。}}};
+#7 s;e;s;#4 w;delay {3};#4 n;n;nw;nu;wd;ne;n;ne;se;sail
+};
+#var {dictpath[mub]} {
+#echo <129>慕容到洛阳;
+#action {^你在湖上航行了半天，终于到了湖的另一边。} {nw; sw;s;sw;se;sd;se;s;#4 s;#delay {3} {#4 e;n;w;#7 n;#unac {^你在湖上航行了半天，终于到了湖的另一边。}}};
+w;w;sw;se;w;s;s;s;wu;wd;#5 w;sail
+};
+#var {dictpath[yue]} {#echo <129>dl-yue;#8 e;n;w;n;ne;e;ne;n;ne;e;e};
+#var {dictpath[yueb]} {#echo <129>dl-yue;w;w;sw;nw;w;#4 s;e;#8 w};
